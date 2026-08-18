@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Latihan Pilihan — แบบฝึกหัดเลือกคำตอบ อวัยวะในร่างกาย</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Noto+Sans+Thai:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --indigo-950:#1B2740;
+    --indigo-800:#22334A;
+    --indigo-600:#2F4562;
+    --gold:#D9A441;
+    --gold-deep:#B9822B;
+    --coral:#E2703A;
+    --leaf:#5C8A6E;
+    --paper:#EEF1F6;
+    --paper-card:#FFFFFF;
+    --line:#D8DEE9;
+    --ok-bg:#E7F4EA;
+    --ok-fg:#2F6B41;
+    --bad-bg:#FBEAE6;
+    --bad-fg:#B3452A;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;min-height:100vh;position:relative;overflow-x:hidden;
+    background:
+      radial-gradient(circle at 8% 6%, rgba(217,164,65,0.15), transparent 42%),
+      radial-gradient(circle at 94% 90%, rgba(92,138,110,0.13), transparent 42%),
+      radial-gradient(circle at 96% 10%, rgba(226,112,58,0.10), transparent 38%),
+      var(--paper);
+    font-family:'Poppins','Noto Sans Thai',sans-serif;
+    color:var(--indigo-950);
+    padding:22px 14px 60px;
+  }
+  .wrap{max-width:540px;margin:0 auto;position:relative;z-index:2;}
+
+  /* decorative batik motif band */
+  .motif{
+    display:flex;justify-content:center;gap:10px;margin:0 auto 14px;
+    opacity:.55;
+  }
+  .motif svg{width:22px;height:22px;}
+
+  header{text-align:center;margin-bottom:14px;}
+  .eyebrow{
+    font-family:'Fredoka',sans-serif;font-size:12px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--gold-deep);font-weight:600;margin-bottom:4px;
+  }
+  h1{
+    font-family:'Fredoka',sans-serif;font-size:25px;margin:0 0 4px;
+    color:var(--indigo-800);line-height:1.25;
+  }
+  .subtitle{font-size:13px;color:var(--indigo-600);margin:0;}
+
+  /* instructions */
+  .instructions{
+    background:#fff;border:1.5px solid var(--gold);border-radius:16px;
+    padding:16px 18px 14px;margin-bottom:16px;
+    box-shadow:0 4px 14px rgba(27,39,64,0.05);
+  }
+  .instructions-title{
+    font-family:'Fredoka',sans-serif;font-weight:600;font-size:15px;
+    color:var(--indigo-800);margin-bottom:8px;
+  }
+  .instructions ol{margin:0;padding-left:20px;font-size:12.8px;color:var(--indigo-600);line-height:1.65;}
+  .instructions li{margin-bottom:7px;}
+  .instructions li:last-child{margin-bottom:0;}
+  .instructions strong{color:var(--indigo-800);}
+  .tag-ok{display:inline-block;background:var(--ok-bg);color:var(--ok-fg);font-weight:600;padding:1px 7px;border-radius:6px;font-size:12px;}
+  .tag-bad{display:inline-block;background:var(--bad-bg);color:var(--bad-fg);font-weight:600;padding:1px 7px;border-radius:6px;font-size:12px;}
+
+  /* progress ring + score */
+  .status-row{display:flex;align-items:center;gap:14px;margin:16px 0;}
+  .ring-wrap{position:relative;width:56px;height:56px;flex-shrink:0;}
+  .ring-wrap svg{transform:rotate(-90deg);width:56px;height:56px;}
+  .ring-bg{fill:none;stroke:#DDE3EE;stroke-width:6;}
+  .ring-fg{fill:none;stroke:url(#ringGrad);stroke-width:6;stroke-linecap:round;
+    stroke-dasharray:150.8;stroke-dashoffset:150.8;transition:stroke-dashoffset .5s cubic-bezier(.4,0,.2,1);}
+  .ring-label{
+    position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+    font-family:'Fredoka',sans-serif;font-weight:600;font-size:12px;color:var(--indigo-800);
+  }
+  .status-text{flex:1;}
+  .status-text .big{font-family:'Fredoka',sans-serif;font-weight:600;font-size:15px;color:var(--indigo-800);}
+  .status-text .small{font-size:12px;color:#8892A6;}
+
+  /* card */
+  .card{
+    background:var(--paper-card);border:1px solid var(--line);
+    border-radius:20px;padding:22px 20px;margin-top:6px;
+    box-shadow:0 8px 22px rgba(27,39,64,0.07);
+    position:relative;overflow:hidden;
+  }
+  .card:before{
+    content:"";position:absolute;top:-40px;right:-40px;width:120px;height:120px;
+    background:radial-gradient(circle, rgba(217,164,65,0.16), transparent 70%);
+    border-radius:50%;
+  }
+  .q-index{font-size:12px;color:var(--gold-deep);font-weight:600;letter-spacing:.05em;position:relative;}
+  .q-word{
+    font-size:21px;font-weight:600;color:var(--indigo-800);
+    margin:6px 0 18px;font-family:'Noto Sans Thai',sans-serif;line-height:1.5;position:relative;
+  }
+  .q-word b{font-family:'Fredoka',sans-serif;color:var(--coral);}
+
+  .options{display:grid;grid-template-columns:1fr 1fr;gap:10px;position:relative;}
+  .opt{
+    display:flex;align-items:center;gap:10px;
+    background:#fff;border:2px solid var(--line);border-radius:14px;
+    padding:12px 12px;cursor:pointer;text-align:left;
+    transition:transform .12s, border-color .2s, background .2s;
+    font-family:'Poppins','Noto Sans Thai',sans-serif;
+  }
+  .opt:hover:not(:disabled){transform:translateY(-2px);border-color:var(--gold);}
+  .opt-letter{
+    font-family:'Fredoka',sans-serif;font-weight:700;font-size:13px;
+    background:var(--indigo-800);color:#fff;width:26px;height:26px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  }
+  .opt-text{font-size:15px;font-weight:600;color:var(--indigo-800);}
+  .opt:disabled{cursor:default;opacity:.5;}
+  .opt.correct-pick{background:var(--ok-bg);border-color:var(--ok-fg);}
+  .opt.correct-pick .opt-letter{background:var(--ok-fg);}
+  .opt.wrong-pick{background:var(--bad-bg);border-color:var(--bad-fg);}
+  .opt.wrong-pick .opt-letter{background:var(--bad-fg);}
+  .opt.reveal-correct{background:var(--ok-bg);border-color:var(--ok-fg);}
+
+  .hint-btn{
+    margin-top:14px;background:none;border:none;color:var(--indigo-600);
+    font-size:12.5px;font-weight:600;cursor:pointer;padding:4px 0;
+    text-decoration:underline;text-underline-offset:3px;position:relative;
+  }
+  .hint-box{
+    display:none;margin-top:6px;background:#FBF3E2;border:1px dashed var(--gold-deep);
+    border-radius:12px;padding:10px 12px;font-size:12.8px;color:#7A5A18;line-height:1.5;
+  }
+  .hint-box.show{display:block;}
+
+  .feedback{display:none;margin-top:14px;border-radius:14px;padding:12px 14px;font-size:13.3px;line-height:1.55;}
+  .feedback.show{display:block;}
+  .feedback.ok{background:var(--ok-bg);color:var(--ok-fg);}
+  .feedback.bad{background:var(--bad-bg);color:var(--bad-fg);}
+  .feedback strong{font-family:'Fredoka',sans-serif;}
+
+  .next-btn{
+    display:none;margin-top:14px;width:100%;
+    font-family:'Fredoka',sans-serif;font-weight:600;font-size:15px;
+    background:var(--indigo-800);color:#fff;border:none;
+    padding:13px;border-radius:12px;cursor:pointer;transition:background .2s;
+  }
+  .next-btn.show{display:block;}
+  .next-btn:hover{background:var(--indigo-600);}
+
+  /* dots */
+  .dots{display:flex;justify-content:center;gap:6px;margin:16px 0 4px;flex-wrap:wrap;}
+  .dot{width:9px;height:9px;border-radius:50%;background:#DDE3EE;transition:background .3s, transform .3s;}
+  .dot.done-ok{background:var(--leaf);}
+  .dot.done-bad{background:var(--coral);}
+  .dot.current{transform:scale(1.4);background:var(--gold);}
+
+  /* tips */
+  .tips{margin-top:16px;}
+  .tips summary{
+    cursor:pointer;list-style:none;display:flex;align-items:center;gap:8px;
+    font-family:'Fredoka',sans-serif;font-weight:600;font-size:14px;
+    color:var(--indigo-800);padding:12px 16px;background:#fff;
+    border:1px solid var(--line);border-radius:14px;
+  }
+  .tips summary::-webkit-details-marker{display:none;}
+  .tips summary:before{content:"💡";}
+  .tips[open] summary{border-radius:14px 14px 0 0;}
+  .tips-body{
+    background:#fff;border:1px solid var(--line);border-top:none;
+    border-radius:0 0 14px 14px;padding:14px 16px;font-size:12.8px;
+    color:var(--indigo-600);line-height:1.6;
+  }
+  .tips-body ul{margin:6px 0;padding-left:18px;}
+  .tips-body li{margin-bottom:6px;}
+
+  /* end screen */
+  .end-card{text-align:center;padding:32px 20px;}
+  .end-emoji{font-size:46px;}
+  .end-score{font-family:'Fredoka',sans-serif;font-size:36px;font-weight:700;color:var(--indigo-800);margin:6px 0 2px;}
+  .end-msg{font-size:14px;color:var(--indigo-600);margin-bottom:20px;line-height:1.6;}
+  .restart-btn{
+    font-family:'Fredoka',sans-serif;font-weight:600;font-size:15px;
+    background:var(--coral);color:#fff;border:none;padding:13px 22px;border-radius:12px;cursor:pointer;
+  }
+  .restart-btn:hover{background:#c95d29;}
+
+  footer.note{text-align:center;font-size:11px;color:#9AA3B5;margin-top:22px;}
+
+  /* confetti */
+  .confetti-piece{
+    position:fixed;top:-10px;width:8px;height:14px;opacity:.9;
+    border-radius:2px;pointer-events:none;z-index:9999;
+    animation:fall linear forwards;
+  }
+  @keyframes fall{
+    to{ transform:translateY(110vh) rotate(540deg); opacity:.3; }
+  }
+
+  @media (max-width:380px){
+    .options{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="motif" aria-hidden="true">
+    <svg viewBox="0 0 24 24"><path d="M12 2 L15 9 22 9 16 14 18 21 12 17 6 21 8 14 2 9 9 9Z" fill="#D9A441"/></svg>
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="#E2703A" stroke-width="2"/></svg>
+    <svg viewBox="0 0 24 24"><path d="M12 2 L15 9 22 9 16 14 18 21 12 17 6 21 8 14 2 9 9 9Z" fill="#5C8A6E"/></svg>
+  </div>
+
+  <header>
+    <div class="eyebrow">Bahagian Anggota Badan · Pilihan</div>
+    <h1>Latihan Pilihan Jawapan<br>เลือกคำตอบที่ถูกต้อง</h1>
+    <p class="subtitle">แบบฝึกหัดปรนัย 4 ตัวเลือก เรื่องอวัยวะในร่างกายภาษามลายู</p>
+  </header>
+
+  <div class="instructions">
+    <div class="instructions-title">📋 คำชี้แจง</div>
+    <ol>
+      <li>แต่ละข้อมีตัวเลือก <strong>4 ข้อ (ก ข ค ง)</strong> ให้แตะเลือกคำตอบที่ถูกต้องที่สุดเพียง 1 ข้อ</li>
+      <li>หากตอบถูก ระบบจะขึ้น <span class="tag-ok">🟢 Betul!</span> พร้อมอธิบายความหมายของคำนั้น และ<strong>ตัวเลือกจะเปลี่ยนเป็นสีเขียว</strong></li>
+      <li>หากตอบผิด ระบบจะขึ้น <span class="tag-bad">🔴 Belum tepat!</span> บอกความหมายที่แท้จริงของตัวเลือกที่เลือกไป ตัวเลือกนั้นจะถูกปิดใช้งาน (สีแดง) และ<strong>สามารถเลือกข้อที่เหลือใหม่ได้ทันที</strong></li>
+      <li>หากตอบผิดครบ 3 ตัวเลือกในข้อเดียวกัน ระบบจะ<strong>เฉลยคำตอบที่ถูกต้อง</strong>ให้อัตโนมัติ พร้อมไฮไลต์สีเขียว</li>
+      <li>กดปุ่ม <strong>“💬 ขอคำใบ้ (hint)”</strong> ได้ทุกเมื่อในแต่ละข้อ เพื่อดูเทคนิคจำคำโดยไม่เฉลยคำตอบตรง ๆ</li>
+      <li>วงกลมด้านบนแสดง<strong>ความคืบหน้า</strong> และจุดเล็ก ๆ ใต้การ์ดแสดงว่าแต่ละข้อตอบถูก (🟢) หรือมีตอบผิดระหว่างทาง (🟠)</li>
+      <li>ทำครบ 10 ข้อจะเห็น<strong>คะแนนรวม</strong>พร้อมข้อความให้กำลังใจ — ถ้าตอบถูกทั้งหมดในครั้งแรกของทุกข้อจะมี🎉ฉลองพิเศษ</li>
+      <li>กด <strong>“ลองใหม่อีกครั้ง”</strong> เพื่อสุ่มลำดับข้อและตัวเลือกใหม่ทั้งหมดแล้วเริ่มทำอีกรอบ</li>
+      <li>เปิดแถบ <strong>“เคล็ดลับการจำคำศัพท์”</strong> ท้ายหน้าดูได้ตลอดเวลา ไม่ว่ากำลังทำข้อใดอยู่</li>
+    </ol>
+  </div>
+
+  <div class="status-row">
+    <div class="ring-wrap">
+      <svg viewBox="0 0 60 60">
+        <defs>
+          <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#D9A441"/>
+            <stop offset="100%" stop-color="#E2703A"/>
+          </linearGradient>
+        </defs>
+        <circle class="ring-bg" cx="30" cy="30" r="24"/>
+        <circle class="ring-fg" id="ringFg" cx="30" cy="30" r="24"/>
+      </svg>
+      <div class="ring-label" id="ringLabel">0/10</div>
+    </div>
+    <div class="status-text">
+      <div class="big">คะแนนสะสม</div>
+      <div class="small" id="statusSmall">เริ่มทำข้อ 1 จาก 10 ข้อ</div>
+    </div>
+  </div>
+
+  <div class="card" id="quizCard">
+    <div class="q-index" id="qIndex">ข้อ 1 / 10</div>
+    <div class="q-word" id="qWord"></div>
+    <div class="options" id="options"></div>
+    <button class="hint-btn" id="hintBtn">💬 ขอคำใบ้ (hint)</button>
+    <div class="hint-box" id="hintBox"></div>
+    <div class="feedback" id="feedback"></div>
+    <button class="next-btn" id="nextBtn">ข้อถัดไป →</button>
+  </div>
+
+  <div class="dots" id="dots"></div>
+
+  <div class="card end-card" id="endCard" style="display:none;">
+    <div class="end-emoji" id="endEmoji">🎉</div>
+    <div class="end-score" id="endScore">10 / 10</div>
+    <div class="end-msg" id="endMsg"></div>
+    <button class="restart-btn" id="restartBtn">ลองใหม่อีกครั้ง / Cuba lagi</button>
+  </div>
+
+  <details class="tips">
+    <summary>เคล็ดลับการจำคำศัพท์ (Tips)</summary>
+    <div class="tips-body">
+      <p>แบบฝึกหัดนี้ปรับจากใบงานที่ 2 (เลือกคำตอบ ก ข ค ง) โดยสลับลำดับข้อและตัวเลือกใหม่ทุกครั้งที่เริ่มทำ เพื่อให้ฝึกทบทวนได้หลายรอบ</p>
+      <ul>
+        <li><strong>kaki</strong> ออกเสียงใกล้เคียงคำไทย "ขา" จำง่ายที่สุด</li>
+        <li><strong>gigi</strong> (ฟัน) ออกเสียงซ้ำสองพยางค์ เหมือนฟันเรียงเป็นแถวในปาก</li>
+        <li><strong>kepala</strong> พบในคำว่า "kepala sekolah" = ครูใหญ่ เพราะหมายถึงส่วนบนสุด/หัว</li>
+        <li><strong>mulut manis</strong> เป็นสำนวนแปลว่า "ปากหวาน" ช่วยจำ mulut = ปาก</li>
+        <li><strong>telinga</strong> คำยาว ออกเสียงก้องกังวานคล้ายมีเสียงลอดผ่านอวัยวะนี้เข้ามา</li>
+        <li>ถ้าไม่แน่ใจตัวเลือกไหน ลองตัดตัวเลือกที่รู้ความหมายแน่นอนออกก่อน แล้วค่อยเดาในตัวเลือกที่เหลือ</li>
+      </ul>
+    </div>
+  </details>
+
+  <footer class="note">Latihan Bahasa Melayu — เลือกคำตอบที่ถูกต้อง อวัยวะในร่างกาย</footer>
+</div>
+
+<script>
+const RAW_QUESTIONS = [
+  {prompt:'คำว่า "ตา" ในภาษามลายูคือข้อใด?', options:["mata","hidung","mulut","telinga"], correct:"mata",
+   hint:"คำนี้ยังปรากฏใน “mata-mata” ที่แปลว่าสายลับ เพราะอวัยวะนี้ใช้สอดส่อง",
+   note:"mata แปลว่า “ตา” ใช้มองเห็นสิ่งต่าง ๆ"},
+  {prompt:'คำว่า "จมูก" ในภาษามลายูคือข้อใด?', options:["gigi","hidung","kaki","rambut"], correct:"hidung",
+   hint:"ขึ้นต้นเสียง “hi-” ลองนึกถึงตอนสูดกลิ่นแรง ๆ ผ่านอวัยวะนี้",
+   note:"hidung แปลว่า “จมูก” ใช้สูดดมกลิ่น"},
+  {prompt:'"mulut" หมายถึงอวัยวะใด?', options:["หู","ปาก","มือ","เท้า"], correct:"ปาก",
+   hint:"มีอยู่ในสำนวน “mulut manis” = ปากหวาน พูดจาไพเราะ",
+   note:"mulut แปลว่า “ปาก” ใช้พูดและกินอาหาร"},
+  {prompt:'"telinga" หมายถึงอวัยวะใด?', options:["หู","ตา","จมูก","ฟัน"], correct:"หู",
+   hint:"คำยาว ออกเสียงคล้ายมีเสียงก้องกังวานลอดผ่านอวัยวะนี้เข้ามา",
+   note:"telinga แปลว่า “หู” ใช้ฟังเสียง"},
+  {prompt:'คำว่า "มือ" ในภาษามลายูคือข้อใด?', options:["kaki","tangan","kepala","perut"], correct:"tangan",
+   hint:"อวัยวะนี้ใช้หยิบจับสิ่งของและทำงานฝีมือต่าง ๆ",
+   note:"tangan แปลว่า “มือ” ใช้หยิบจับสิ่งของ"},
+  {prompt:'"kaki" หมายถึงอวัยวะใด?', options:["ผม","ท้อง","เท้า/ขา","ศีรษะ"], correct:"เท้า/ขา",
+   hint:"คำสั้น ง่าย ออกเสียงใกล้เคียงคำไทย “ขา” เลย!",
+   note:"kaki แปลว่า “เท้า/ขา” ใช้เดินและยืน"},
+  {prompt:'คำว่า "ศีรษะ" ในภาษามลายูคือข้อใด?', options:["kepala","rambut","gigi","tangan"], correct:"kepala",
+   hint:"พบในคำว่า “kepala sekolah” = ครูใหญ่ เพราะเป็นส่วนที่อยู่บนสุด/เป็นหัว",
+   note:"kepala แปลว่า “ศีรษะ” เป็นส่วนบนสุดของร่างกาย"},
+  {prompt:'"rambut" หมายถึงสิ่งใด?', options:["ฟัน","ผม","ปาก","หู"], correct:"ผม",
+   hint:"นึกถึงการหวีผมทุกเส้นที่ปกคลุมอยู่บนศีรษะ",
+   note:"rambut แปลว่า “ผม” ปกคลุมอยู่บนศีรษะ"},
+  {prompt:'คำว่า "ฟัน" ในภาษามลายูคือข้อใด?', options:["mata","perut","gigi","hidung"], correct:"gigi",
+   hint:"ออกเสียงซ้ำสองพยางค์ “gi-gi” เหมือนฟันที่เรียงกันเป็นแถวในปาก",
+   note:"gigi แปลว่า “ฟัน” อยู่ในปาก ใช้เคี้ยวอาหาร"},
+  {prompt:'"perut" หมายถึงอวัยวะใด?', options:["ท้อง","มือ","ตา","เท้า/ขา"], correct:"ท้อง",
+   hint:"ลองนึกถึงเสียง “พรืด” ตอนท้องร้อง",
+   note:"perut แปลว่า “ท้อง” อยู่บริเวณกลางลำตัว"},
+];
+
+const MY_TO_TH = {mata:"ตา",hidung:"จมูก",mulut:"ปาก",telinga:"หู",tangan:"มือ",kaki:"เท้า/ขา",kepala:"ศีรษะ",rambut:"ผม",gigi:"ฟัน",perut:"ท้อง"};
+const TH_TO_MY = Object.fromEntries(Object.entries(MY_TO_TH).map(([k,v])=>[v,k]));
+const LETTERS = ["ก","ข","ค","ง"];
+
+let order = [];
+let current = 0;
+let score = 0;
+let results = []; // 'ok' | 'bad' per question (bad = had a wrong attempt)
+let hadWrongThisQ = false;
+let wrongCount = 0;
+let locked = false;
+
+const qIndex = document.getElementById('qIndex');
+const qWord = document.getElementById('qWord');
+const optionsEl = document.getElementById('options');
+const hintBtn = document.getElementById('hintBtn');
+const hintBox = document.getElementById('hintBox');
+const feedback = document.getElementById('feedback');
+const nextBtn = document.getElementById('nextBtn');
+const ringFg = document.getElementById('ringFg');
+const ringLabel = document.getElementById('ringLabel');
+const statusSmall = document.getElementById('statusSmall');
+const dotsEl = document.getElementById('dots');
+const quizCard = document.getElementById('quizCard');
+const endCard = document.getElementById('endCard');
+const RING_CIRC = 150.8;
+
+function shuffle(arr){
+  const a=[...arr];
+  for(let i=a.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+
+function buildOrder(){
+  order = shuffle(RAW_QUESTIONS).map(q=>({
+    ...q,
+    shuffledOptions: shuffle(q.options)
+  }));
+}
+
+function meaningOf(word, q){
+  // returns the "other side" meaning to explain a wrong pick
+  if(MY_TO_TH[word]) return `${word}” แปลว่า “${MY_TO_TH[word]}`;
+  if(TH_TO_MY[word]) return `${word}” ตรงกับคำมลายูว่า “${TH_TO_MY[word]}`;
+  return word;
+}
+
+function renderDots(){
+  dotsEl.innerHTML = '';
+  for(let i=0;i<order.length;i++){
+    const d = document.createElement('div');
+    d.className = 'dot';
+    if(i === current) d.classList.add('current');
+    if(results[i] === 'ok') d.classList.add('done-ok');
+    if(results[i] === 'bad') d.classList.add('done-bad');
+    dotsEl.appendChild(d);
+  }
+}
+
+function updateStatus(){
+  const frac = score/order.length;
+  ringFg.style.strokeDashoffset = RING_CIRC - frac*RING_CIRC;
+  ringLabel.textContent = `${score}/${order.length}`;
+  statusSmall.textContent = current < order.length
+    ? `กำลังทำข้อ ${current+1} จาก ${order.length} ข้อ`
+    : `ทำครบทุกข้อแล้ว`;
+  renderDots();
+}
+
+function renderQuestion(){
+  hadWrongThisQ = false;
+  wrongCount = 0;
+  locked = false;
+  const q = order[current];
+  qIndex.textContent = `ข้อ ${current+1} / ${order.length}`;
+  qWord.innerHTML = q.prompt.replace(/"([^"]+)"/, '“<b>$1</b>”');
+
+  hintBox.classList.remove('show');
+  hintBox.textContent = '';
+  feedback.className = 'feedback';
+  feedback.textContent = '';
+  nextBtn.classList.remove('show');
+
+  optionsEl.innerHTML = '';
+  q.shuffledOptions.forEach((opt, i)=>{
+    const btn = document.createElement('button');
+    btn.className = 'opt';
+    btn.innerHTML = `<span class="opt-letter">${LETTERS[i]}</span><span class="opt-text">${opt}</span>`;
+    btn.dataset.value = opt;
+    btn.addEventListener('click', ()=>handleAnswer(opt, btn));
+    optionsEl.appendChild(btn);
+  });
+
+  updateStatus();
+}
+
+function handleAnswer(value, btn){
+  if(locked) return;
+  const q = order[current];
+  const allOpts = [...optionsEl.querySelectorAll('.opt')];
+
+  if(value === q.correct){
+    locked = true;
+    score++;
+    btn.classList.add('correct-pick');
+    allOpts.forEach(o=>{ if(o!==btn) o.disabled = true; });
+    btn.disabled = true;
+
+    results[current] = hadWrongThisQ ? 'bad' : 'ok';
+
+    feedback.className = 'feedback ok show';
+    feedback.innerHTML = `<strong>🟢 Betul!</strong> ${q.note}`;
+    nextBtn.classList.add('show');
+    nextBtn.textContent = (current === order.length-1) ? 'ดูผลคะแนน →' : 'ข้อถัดไป →';
+    updateStatus();
+  } else {
+    hadWrongThisQ = true;
+    wrongCount++;
+    btn.classList.add('wrong-pick');
+    btn.disabled = true;
+
+    feedback.className = 'feedback bad show';
+    feedback.innerHTML = `<strong>🔴 Belum tepat!</strong> “${meaningOf(value,q)}” ลองพิจารณาตัวเลือกที่เหลือ หรือขอคำใบ้ดูนะ`;
+
+    if(wrongCount >= 3){
+      // reveal correct answer
+      locked = true;
+      const correctBtn = allOpts.find(o=>o.dataset.value === q.correct);
+      if(correctBtn){ correctBtn.classList.add('reveal-correct'); }
+      allOpts.forEach(o=>o.disabled = true);
+      results[current] = 'bad';
+      feedback.className = 'feedback bad show';
+      feedback.innerHTML = `<strong>🟠 เฉลย:</strong> คำตอบที่ถูกต้องคือ “${q.correct}” — ${q.note}`;
+      nextBtn.classList.add('show');
+      nextBtn.textContent = (current === order.length-1) ? 'ดูผลคะแนน →' : 'ข้อถัดไป →';
+      updateStatus();
+    } else if(wrongCount >= 2){
+      hintBox.textContent = '💡 ' + q.hint;
+      hintBox.classList.add('show');
+    }
+  }
+}
+
+hintBtn.addEventListener('click', ()=>{
+  const q = order[current];
+  hintBox.textContent = '💡 ' + q.hint;
+  hintBox.classList.add('show');
+});
+
+nextBtn.addEventListener('click', ()=>{
+  current++;
+  if(current >= order.length){
+    showEnd();
+  } else {
+    renderQuestion();
+  }
+});
+
+function launchConfetti(){
+  const colors = ['#D9A441','#E2703A','#5C8A6E','#22334A'];
+  for(let i=0;i<60;i++){
+    const p = document.createElement('div');
+    p.className = 'confetti-piece';
+    p.style.left = Math.random()*100+'vw';
+    p.style.background = colors[Math.floor(Math.random()*colors.length)];
+    p.style.animationDuration = (2.2 + Math.random()*1.6)+'s';
+    p.style.animationDelay = (Math.random()*0.4)+'s';
+    document.body.appendChild(p);
+    setTimeout(()=>p.remove(), 4200);
+  }
+}
+
+function showEnd(){
+  quizCard.style.display = 'none';
+  dotsEl.style.display = 'none';
+  endCard.style.display = 'block';
+  updateStatus();
+
+  const perfect = results.every(r=>r==='ok');
+  document.getElementById('endScore').textContent = `${score} / ${order.length}`;
+  const emoji = document.getElementById('endEmoji');
+  const msg = document.getElementById('endMsg');
+
+  if(perfect){
+    emoji.textContent = '🎉';
+    msg.textContent = 'Tahniah! Semua jawapan betul dalam percubaan pertama! คุณตอบถูกทุกข้อตั้งแต่ครั้งแรกอย่างยอดเยี่ยม';
+    launchConfetti();
+  } else if(score === order.length){
+    emoji.textContent = '🟢';
+    msg.textContent = 'Bagus! ตอบถูกครบทั้ง 10 ข้อ แม้บางข้อจะต้องลองใหม่ก็ตาม — ทบทวนคำใบ้อีกนิดจะแม่นยิ่งขึ้น';
+    launchConfetti();
+  } else if(score >= order.length*0.7){
+    emoji.textContent = '🟢';
+    msg.textContent = 'Bagus! เก่งมาก เกือบครบแล้ว ลองทบทวนข้อที่พลาดแล้วลองใหม่อีกครั้ง';
+  } else if(score >= order.length*0.4){
+    emoji.textContent = '🟡';
+    msg.textContent = 'Cuba lagi! ยังพอมีคำที่ต้องทบทวน ลองเปิดแถบ "เคล็ดลับการจำคำศัพท์" ด้านล่างช่วยได้';
+  } else {
+    emoji.textContent = '🔴';
+    msg.textContent = 'Belum tepat, tapi jangan risau! ลองอ่านคำใบ้ของแต่ละข้อให้ละเอียด แล้วลองทำใหม่อีกครั้งนะ';
+  }
+}
+
+document.getElementById('restartBtn').addEventListener('click', ()=>{
+  buildOrder();
+  current = 0;
+  score = 0;
+  results = [];
+  quizCard.style.display = 'block';
+  dotsEl.style.display = 'flex';
+  endCard.style.display = 'none';
+  renderQuestion();
+});
+
+buildOrder();
+renderQuestion();
+</script>
+</body>
+</html>
